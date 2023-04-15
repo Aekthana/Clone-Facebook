@@ -15,4 +15,15 @@
   .bg-pink-400{
     background-color: #FEFAE0;
   }
+
+  .h-96{
+    height: 35rem;
+  }
+  .border-pink-500{
+    border-color: #FEFAE0;
+  }
+  .border-green-500{
+    border-color: #CCD5AE;
+  }
+  
 }
