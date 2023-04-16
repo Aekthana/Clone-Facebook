@@ -1,0 +1,31 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchDataProfile = createAsyncThunk(
+  "dataProfile/fetchDataProfile",
+  async () => {
+    const response = await axios.get("https://reqres.in/api/users/1");
+    return response.data;
+  }
+);
+
+const profileSlice = createSlice({
+  name: "dataProfile",
+  initialState: {
+    value: "",
+  },
+  reducers: {
+    setDataProfile: (state, action) => {
+      state.value = JSON.stringify(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchDataProfile.fulfilled, (state, action) => {
+      state.value = JSON.stringify(action.payload.data);
+    });
+  },
+});
+
+export const { setDataProfile } = profileSlice.actions;
+
+export default profileSlice.reducer;
