@@ -69,10 +69,10 @@ const Main = () => {
             <div className="flex justify-between ">
               <div className="flex items-center w-full  ">
                 <a href="#">
-                  <div className="h-11 w-11 rounded-full bg-pink-500"></div>
+                  <img src={profile ? profile.avatar : ""} className="h-11 w-11 rounded-full bg-pink-500"></img>
                 </a>
                 <div className="px-3">
-                  <p>Aekthana Boonsawai</p>
+                  <p>{profile ? `${profile.first_name} ${profile.last_name}` : ""}</p>
                   <p className="text-xs">
                     1 นาที - <FontAwesomeIcon icon={faEarth} />
                   </p>
