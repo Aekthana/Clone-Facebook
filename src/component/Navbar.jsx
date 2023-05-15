@@ -10,8 +10,12 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
+import { DataContext } from "../App";
 
 const Navbar = () => {
+  const { profile } = useContext(DataContext);
+
   return (
     <nav
       className="w-1/5 fixed left-0 font-medium hover:overflow-y-scroll overflow-hidden text-base bg-green-500"
@@ -40,9 +44,22 @@ const Navbar = () => {
                   className=" flex items-center hover:bg-pink-500 w-full rounded-lg mx-1"
                 >
                   <div className="h-8  w-8 rounded-full flex justify-center items-center ">
-                    <div className="h-6 w-6 rounded-full flex justify-center items-center bg-pink-400 "></div>
+                    {profile ? (
+                      <img
+                        className="h-6 w-6 rounded-full flex justify-center items-center bg-pink-400 "
+                        src={profile.avatar}
+                      ></img>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                  <p className="ps-1">Aekthana Boonsawai</p>
+                  {profile ? (
+                    <p className="ps-1">
+                      {profile.first_name} {profile.last_name}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
                 </a>
               </div>
             </li>

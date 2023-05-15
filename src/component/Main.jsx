@@ -12,21 +12,34 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
+import { DataContext } from "../App";
 
 const Main = () => {
+  const { profile } = useContext(DataContext);
+
   return (
     <main className="font-semibold" style={{ width: "30rem" }}>
       <div className="w-full p-3 my-7 bg-green-400 rounded-lg">
         <div className="flex items-center w-full  border-b border-pink-500 pb-3">
           <a href="#">
-            <div className="h-11 w-11 rounded-full bg-pink-500"></div>
+            {profile ? (
+              <img
+                src={profile.avatar}
+                className="h-11 w-11 rounded-full bg-pink-500"
+              ></img>
+            ) : (
+              <></>
+            )}
           </a>
           <form action="#" className="w-full">
             <input
-              type="text "
-              className="h-10 rounded-full bg-pink-400 hover:bg-pink-500 px-3 mx-2 focus:outline-none "
+              type="text"
+              className="h-10 rounded-full bg-pink-400 hover:bg-pink-500 px-3 mx-2 focus:outline-none"
               style={{ width: "98%" }}
-              placeholder="คุณคิดอะไรอยู่ Aekthana"
+              placeholder={
+                profile ? `คุณคิดอะไรอยู่ ${profile.first_name}` : ""
+              }
             />
           </form>
         </div>
@@ -98,7 +111,14 @@ const Main = () => {
             <div className="flex justify-between ">
               <div className="flex items-center w-full  ">
                 <a href="#">
-                  <div className="h-8 w-8 rounded-full bg-pink-500"></div>
+                  {profile ? (
+                    <img
+                      src={profile.avatar}
+                      className="h-8 w-8 rounded-full bg-pink-500"
+                    ></img>
+                  ) : (
+                    <></>
+                  )}
                 </a>
                 <div className="px-1 w-full">
                   <form action="#" className="relative">
@@ -145,7 +165,6 @@ const Main = () => {
             </div>
           </div>
         </li>
-        
       </ul>
     </main>
   );

@@ -16,9 +16,12 @@ import {
   faUser,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef, useState } from "react";
+import { Profiler, useContext, useEffect, useRef, useState } from "react";
+import { DataContext } from "../App";
 
 const Header = () => {
+  const { profile, profileFriend } = useContext(DataContext);
+
   const [dropDownProfile, setDropDownProfile] = useState(false);
   const [dropDownBell, setDropDownBell] = useState(false);
   const [dropDownMessage, setDropDownMessage] = useState(false);
@@ -114,7 +117,7 @@ const Header = () => {
       <div className="flex gap-1">
         <div className="relative">
           <div
-            className={`h-10 w-10 rounded-full flex justify-center items-center  hover:bg-pink-500 ${
+            className={`h-10 w-10 rounded-full flex justify-center items-center  cursor-pointer hover:bg-pink-500 ${
               dropDownMessage ? "bg-pink-500 text-pink-500" : "bg-pink-400 "
             }`}
             onClick={handleClickMessage}
@@ -123,7 +126,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faMessage} />
           </div>
           {dropDownMessage && (
-            <div className="absolute right-0 top-12 " ref={dropDownMessageRef} >
+            <div className="absolute right-0 top-12 " ref={dropDownMessageRef}>
               <div className="z-10 bg-green-400 rounded-lg w-80 shadow py-4 text-gray-900 overflow-y-auto h-96">
                 <div className="px-4 py-2">
                   <div className="flex justify-between">
@@ -157,58 +160,86 @@ const Header = () => {
                   </div>
                   <div className="relative my-2">
                     <form action="">
-                        <input
-                          type="text"
-                          id="search"
-                          placeholder="ค้นหาบน Facebook"
-                          className="pl-10 pr-6 h-7 border-none  rounded-full shadow-inner text-sm sm:text-base bg-pink-400 focus:outline-none focus:bg-pink-500 hover:bg-pink-500 w-full"
+                      <input
+                        type="text"
+                        id="search"
+                        placeholder="ค้นหาบน Facebook"
+                        className="pl-10 pr-6 h-7 border-none  rounded-full shadow-inner text-sm sm:text-base bg-pink-400 focus:outline-none focus:bg-pink-500 hover:bg-pink-500 w-full"
+                      />
+                      <label htmlFor="search">
+                        <FontAwesomeIcon
+                          icon={faMagnifyingGlass}
+                          className=" absolute left-4 top-1/2 transform -translate-y-1/2 cursor-text"
                         />
-                        <label htmlFor="search">
-                          <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            className=" absolute left-4 top-1/2 transform -translate-y-1/2 cursor-text"
-                          />
-                        </label>
+                      </label>
                     </form>
                   </div>
                   <div className="flex gap-x-2 my-3">
-                  <a
+                    <a
                       href="#"
                       className={`hover:bg-pink-500 hover:text-pink-500 rounded-xl text-sm focus:bg-pink-500 focus:text-pink-500 ${
                         activeMessage === 1 ? "bg-pink-500 text-pink-500" : ""
                       } px-2 py-1`}
-                      onClick={()=>{setActiveMessage(1)}}
+                      onClick={() => {
+                        setActiveMessage(1);
+                      }}
                     >
                       กล่องข้อความ
                     </a>
-                  <a
+                    <a
                       href="#"
                       className={`hover:bg-pink-500 hover:text-pink-500 rounded-xl text-sm focus:bg-pink-500 focus:text-pink-500 ${
                         activeMessage === 2 ? "bg-pink-500 text-pink-500" : ""
                       } px-2 py-1`}
-                      onClick={()=>{setActiveMessage(2)}}
+                      onClick={() => {
+                        setActiveMessage(2);
+                      }}
                     >
                       คอมมูนิตี้
                     </a>
                   </div>
-                  <ul >
-                  <li >
-                    <a
-                      href="#"
-                      className="flex items-center hover:bg-pink-500  rounded-xl py-2 px-1"
-                    >
-                      <div>
-                        <div className="h-14 w-14 bg-pink-400 rounded-full flex items-end justify-end col-span-1 ">
-                          <div className="h-4 w-4 bg-green-600 rounded-full">
-                          </div>
+                  <ul>
+                    <li>
+                      <a
+                        href="#"
+                        className="flex items-center hover:bg-pink-500  rounded-xl py-2 px-1"
+                      >
+                        <div>
+                          {profileFriend ? (
+                            <div
+                              className="h-14 w-14 rounded-full flex items-end justify-end col-span-1"
+                              style={{
+                                backgroundImage: `url(${profileFriend.avatar})`,
+                                backgroundSize: "cover",
+                              }}
+                            >
+                              <div className="h-4 w-4 bg-green-600 rounded-full"></div>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
                         </div>
-                      </div>
-                      <div className="px-3 truncate">
-                        <p>Elon Musk </p>
-                        <p className="text-xs">Elon Musk: HI <span>-10 นาที</span></p>
-                      </div>
-                    </a>
-                  </li>
+                        <div className="px-3 truncate">
+                          {profileFriend ? (
+                            <p>
+                              {profileFriend.first_name}{" "}
+                              {profileFriend.last_name}
+                            </p>
+                          ) : (
+                            <></>
+                          )}
+                          {profileFriend ? (
+                            <p className="text-xs">
+                              {profileFriend.first_name}{" "}
+                              {profileFriend.last_name} : HI{" "}
+                              <span>-10 นาที</span>
+                            </p>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -217,7 +248,7 @@ const Header = () => {
         </div>
         <div className="relative">
           <div
-            className={`h-10 w-10 rounded-full flex justify-center items-center  hover:bg-pink-500 ${
+            className={`h-10 w-10 rounded-full flex justify-center items-center  cursor-pointer hover:bg-pink-500 ${
               dropDownBell ? "bg-pink-500 text-pink-500" : "bg-pink-400 "
             }`}
             onClick={handleClickBell}
@@ -281,14 +312,32 @@ const Header = () => {
                       className="flex items-center hover:bg-pink-500 px-2 py-1 rounded-xl "
                     >
                       <div>
-                        <div className="h-14 w-14 bg-pink-400 rounded-full flex items-end justify-end col-span-1 ">
-                          <div className="h-7 w-7 bg-sky-500 rounded-full flex items-center justify-center text-white">
-                            <FontAwesomeIcon icon={faUser} />
+                        {profileFriend ? (
+                          <div
+                            className="h-14 w-14 bg-pink-400 rounded-full flex items-end justify-end col-span-1 "
+                            style={{
+                              backgroundImage: `url(${profileFriend.avatar})`,
+                              backgroundSize: "cover",
+                            }}
+                          >
+                            <div className="h-7 w-7 bg-sky-500 rounded-full flex items-center justify-center text-white">
+                              <FontAwesomeIcon icon={faUser} />
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       <div className="px-3">
-                        <p>Elon Musk ได้ส่งคำขอเป็นเพื่อนคุณ</p>
+                        {profileFriend ? (
+                          <p>
+                            {profileFriend.first_name} {profileFriend.last_name}{" "}
+                            ได้ส่งคำขอเป็นเพื่อนคุณ
+                          </p>
+                        ) : (
+                          <></>
+                        )}
+
                         <p className="text-xs">3 สัปดาห์ที่แล้ว</p>
                       </div>
                     </a>
@@ -300,13 +349,22 @@ const Header = () => {
         </div>
         <div className="relative">
           <div
-            className={`h-10 w-10 rounded-full flex items-end justify-end  hover:bg-pink-500 ${
+            className={`h-10 w-10 rounded-full flex items-end justify-end  cursor-pointer	 hover:bg-pink-500 ${
               dropDownProfile ? "bg-pink-500 text-pink-500" : "bg-pink-400 "
             }`}
             onClick={handleClickProfile}
             ref={dropDownToggleProfileRef}
           >
-            <FontAwesomeIcon icon={faCaretDown} />
+            {profile ? (
+              <img
+                src={profile.avatar}
+                alt=""
+                className="h-10 w-10 rounded-full absolute z-0"
+              />
+            ) : (
+              <></>
+            )}
+            <FontAwesomeIcon icon={faCaretDown} className="z-10" />
           </div>
           {dropDownProfile && (
             <div className="absolute right-0 top-12" ref={dropDownProfileRef}>
@@ -316,8 +374,20 @@ const Header = () => {
                     href="#"
                     className="font-medium text-lg py-2 px-2 flex items-center hover:bg-pink-500"
                   >
-                    <div className=" w-9 h-9 rounded-full bg-pink-400"></div>
-                    <span className="mx-2">Aekthana Boonsawai</span>
+                    {profile ? (
+                      <>
+                        <img
+                          src={profile.avatar}
+                          alt=""
+                          className="w-9 h-9 rounded-full"
+                        />
+                        <span className="mx-2">
+                          {profile.first_name} {profile.last_name}
+                        </span>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </a>
                   <hr className="absolute left-1/2 transform -translate-x-1/2 h-px w-11/12" />
                   <a
