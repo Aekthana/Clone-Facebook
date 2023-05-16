@@ -15,16 +15,20 @@ import {
   faRightFromBracket,
   faUser,
   faVideo,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { Profiler, useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../App";
+import { compose } from "@reduxjs/toolkit";
 
 const Header = () => {
-  const { profile, profileFriend } = useContext(DataContext);
+  const { profile, profileFriend, allProfileFriend} = useContext(DataContext);
+  console.log(allProfileFriend)
 
   const [dropDownProfile, setDropDownProfile] = useState(false);
   const [dropDownBell, setDropDownBell] = useState(false);
   const [dropDownMessage, setDropDownMessage] = useState(false);
+  const [dropDownSearch, setDropDownSearch] = useState(false);
   const [activeBell, setActiveBell] = useState(3);
   const [activeMessage, setActiveMessage] = useState(1);
 
@@ -34,6 +38,8 @@ const Header = () => {
   const dropDownToggleBellRef = useRef(null);
   const dropDownMessageRef = useRef(null);
   const dropDownToggleMessageRef = useRef(null);
+  const dropDownSearchRef = useRef(null);
+  const dropDownToggleSearchRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -75,12 +81,29 @@ const Header = () => {
           setDropDownMessage(true);
         }
       }
+      if (
+        dropDownSearchRef.current &&
+        !dropDownSearchRef.current.contains(event.target)
+      ) {
+        setDropDownSearch(false);
+        if (
+          dropDownToggleSearchRef.current &&
+          dropDownToggleSearchRef.current.contains(event.target)
+        ) {
+          setDropDownSearch(true);
+        }
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropDownProfileRef, dropDownBellRef, dropDownMessageRef]);
+  }, [
+    dropDownProfileRef,
+    dropDownBellRef,
+    dropDownMessageRef,
+    dropDownSearchRef,
+  ]);
 
   const handleClickProfile = () => {
     setDropDownProfile(!dropDownProfile);
@@ -91,13 +114,14 @@ const Header = () => {
   const handleClickMessage = () => {
     setDropDownMessage(!dropDownMessage);
   };
+  const handleClickSearch = () => {
+    setDropDownSearch(!dropDownSearch);
+  };
 
   return (
     <header className="flex justify-between items-center px-4 py-1 bg-green-400  w-full border-b-2 border-pink-500 fixed top-0 left-0 right-0">
-      <a href="#">
-        <h3 className="text-3xl font-bold">facebook</h3>
-      </a>
-      <form action="">
+      <a  href="#" className="text-3xl font-bold">facebook</a>
+      <form action="" className="relative">
         <div className="relative">
           <input
             type="text"
@@ -105,6 +129,8 @@ const Header = () => {
             placeholder="ค้นหาบน Facebook"
             className="pl-10 pr-6 h-10 border-none  rounded-full shadow-inner text-sm sm:text-base bg-pink-400 focus:outline-none  hover:bg-pink-500"
             style={{ width: "30rem" }}
+            ref={dropDownToggleSearchRef}
+            onClick={handleClickSearch}
           />
           <label htmlFor="search">
             <FontAwesomeIcon
@@ -113,6 +139,43 @@ const Header = () => {
             />
           </label>
         </div>
+        {dropDownSearch && (
+          <div
+            className="absolute left-0 top-12 w-full"
+            ref={dropDownSearchRef}
+          >
+            <div
+              className="z-10 bg-green-400 rounded-lg shadow py-4 text-gray-900 overflow-y-auto"
+              style={{ height: "30rem" }}
+            >
+              <div className="px-4 py-2">
+                <div className="flex justify-between items-center">
+                  <p className=" font-bold">การค้นหาล่าสุด</p>
+                  <p className=" font-bold text-sm text-pink-500 hover:bg-pink-500 p-2 rounded-md cursor-pointer">
+                    แก้ไข
+                  </p>
+                </div>
+                <ul>
+                  {allProfileFriend && allProfileFriend.map((profile)=>(
+                    ( <li className="mt-2 py-1 rounded-md hover:bg-pink-500 cursor-pointer">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <img src={profile.avatar} className="rounded-full bg-pink-500 w-10 h-10"></img>
+                        <p>{`${profile.first_name} ${profile.last_name}`}</p>
+                      </div>
+                      <div className="mr-3 w-7 h-7 text-xs rounded-full flex justify-center items-center hover:bg-pink-400 ">
+                        <FontAwesomeIcon icon={faX} />
+                      </div>
+                    </div>
+                  </li>)
+                  ))}
+            
+                 
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
       <div className="flex gap-1">
         <div className="relative">

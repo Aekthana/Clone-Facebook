@@ -12,11 +12,16 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "../App";
 
 const Main = () => {
   const { profile } = useContext(DataContext);
+  const [activeLike, setActiveLike] = useState(false);
+
+  const handleActiveLike = () => {
+    setActiveLike(!activeLike);
+  };
 
   return (
     <main className="font-semibold" style={{ width: "30rem" }}>
@@ -69,10 +74,17 @@ const Main = () => {
             <div className="flex justify-between ">
               <div className="flex items-center w-full  ">
                 <a href="#">
-                  <img src={profile ? profile.avatar : ""} className="h-11 w-11 rounded-full bg-pink-500"></img>
+                  <img
+                    src={profile ? profile.avatar : ""}
+                    className="h-11 w-11 rounded-full bg-pink-500"
+                  ></img>
                 </a>
                 <div className="px-3">
-                  <p>{profile ? `${profile.first_name} ${profile.last_name}` : ""}</p>
+                  <p>
+                    {profile
+                      ? `${profile.first_name} ${profile.last_name}`
+                      : ""}
+                  </p>
                   <p className="text-xs">
                     1 นาที - <FontAwesomeIcon icon={faEarth} />
                   </p>
@@ -85,18 +97,30 @@ const Main = () => {
             <p className="text-2xl px-1 py-2">Hello World !!!</p>
           </div>
 
-          <div className="w-full  flex justify-center border-b border-pink-500">
+          <div className="w-full  flex justify-center border-b border-pink-500 gap-1">
             <a
               href="#"
-              className="flex items-center w-2/4 justify-center hover:bg-green-500   rounded-lg my-1 py-1 "
+              className={`flex items-center w-2/4 justify-center hover:bg-green-500   rounded-lg my-1 py-1 ${
+                activeLike ? "bg-green-500" : ""
+              }`}
+              onClick={handleActiveLike}
             >
               <FontAwesomeIcon
                 icon={faThumbsUp}
-                className="text-gray-500 text-xl"
+                className={`text-xl ${
+                  activeLike ? "text-pink-500" : "text-gray-500"
+                }`}
               />
-              <p className="px-2 text-gray-500">ถูกใจ</p>
+              <p
+                className={`px-2 ${
+                  activeLike ? "text-pink-500" : "text-gray-500"
+                }`}
+              >
+                ถูกใจ
+              </p>
             </a>
-            <a
+            <label
+              for="comment"
               href="#"
               className="flex items-center w-2/4 justify-center hover:bg-green-500  rounded-lg my-1 py-1"
             >
@@ -105,7 +129,7 @@ const Main = () => {
                 className="text-gray-500 text-xl"
               />
               <p className="px-2 text-gray-500">แสดงความคิดเห็น</p>
-            </a>
+            </label>
           </div>
           <div className="mt-2">
             <div className="flex justify-between ">
@@ -123,6 +147,7 @@ const Main = () => {
                 <div className="px-1 w-full">
                   <form action="#" className="relative">
                     <input
+                      id="comment"
                       className="bg-pink-400 py-1 px-2 w-full rounded-full focus:outline-none"
                       type="text"
                       placeholder="แสดงความคิดเห็น..."
