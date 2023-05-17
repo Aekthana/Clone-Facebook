@@ -29,7 +29,7 @@ const handleSwitchChat = ()=>{
 
   return (
     <>
-      <div className="fixed h-3/5 w-80 bg-green-400 right-20 bottom-9 rounded-md">
+      <div className="fixed h-3/5 w-80 bg-green-400 right-20 bottom-0 rounded-md pb-10">
         <div className="flex border-b border-pink-500">
           <div
             className="flex justify-between items-center gap-1 hover:bg-green-500 p-1 pt-0 pr-2 cursor-pointer rounded-lg "
@@ -63,7 +63,7 @@ const handleSwitchChat = ()=>{
           </div>
         </div>
         <div className="overflow-y-scroll h-5/6 "></div>
-        <div className="p-1 flex h-14 items-center bg-green-400 gap-2  ">
+        <div className="p-1 flex h-14 items-center bg-green-400 gap-2 ">
           <div className="rounded-full h-7 w-7 text-xl flex justify-center items-center cursor-pointer hover:bg-green-500 text-pink-500">
             <FontAwesomeIcon icon={faCirclePlus}/>
           </div>
