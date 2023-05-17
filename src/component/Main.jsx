@@ -120,7 +120,7 @@ const Main = () => {
               </p>
             </a>
             <label
-              for="comment"
+              htmlFor="comment"
               href="#"
               className="flex items-center w-2/4 justify-center hover:bg-green-500  rounded-lg my-1 py-1"
             >

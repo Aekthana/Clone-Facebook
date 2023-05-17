@@ -22,8 +22,7 @@ import { DataContext } from "../App";
 import { compose } from "@reduxjs/toolkit";
 
 const Header = () => {
-  const { profile, profileFriend, allProfileFriend} = useContext(DataContext);
-  console.log(allProfileFriend)
+  const { profile, profileFriend, allProfileFriend,setSwitchChat, setParamChat} = useContext(DataContext);
 
   const [dropDownProfile, setDropDownProfile] = useState(false);
   const [dropDownBell, setDropDownBell] = useState(false);
@@ -105,6 +104,11 @@ const Header = () => {
     dropDownSearchRef,
   ]);
 
+  const handleClickSwitchChat = () =>{
+    setSwitchChat(true)
+    setDropDownMessage(!dropDownMessage);
+    setParamChat(profileFriend.id);
+  }
   const handleClickProfile = () => {
     setDropDownProfile(!dropDownProfile);
   };
@@ -282,7 +286,7 @@ const Header = () => {
                             <></>
                           )}
                         </div>
-                        <div className="px-3 truncate">
+                        <div className="px-3 truncate" onClick={handleClickSwitchChat}>
                           {profileFriend ? (
                             <p>
                               {profileFriend.first_name}{" "}

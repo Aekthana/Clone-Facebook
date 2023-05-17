@@ -5,6 +5,7 @@ import Main from "./component/Main";
 import Navbar from "./component/Navbar";
 import "/src/App.css";
 import axios from "axios";
+import Chat from "./component/Chat";
 
 
 export const DataContext  = createContext();
@@ -14,8 +15,12 @@ function App() {
   const [profile, setProfile] = useState()
   const [profileFriend, setProfileFriend] = useState()
   const [allProfileFriend, setAllProfileFriend] = useState([])
+  const [switchChat, setSwitchChat] = useState(false);
+  const [paramChat, setParamChat] = useState(1);
+  const [profileChat, setProfileChat] = useState();
 
   useEffect(()=>{
+
     async function fetchProfile(){
       try{
         const response = await axios.get('https://reqres.in/api/users/10')
@@ -44,15 +49,30 @@ function App() {
         console.log(error)
       }
     }
-    
+
+ 
     fetchProfile();
     fetchProfileFriend();
     fetchProfileAllFriend();
   },[])
+
+  useEffect(()=>{
+    async function fetchProfileChat(){
+      try{
+        const response = await axios.get(`https://reqres.in/api/users/${paramChat}`)
+        setProfileChat(response.data.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    fetchProfileChat();
+
+  },[paramChat])
   
 
   return (
-    <DataContext.Provider value={{profile, profileFriend, allProfileFriend}}>
+    <DataContext.Provider value={{profile, profileFriend, allProfileFriend, setSwitchChat, setParamChat, profileChat}}>
       <div className="App text-gray-900 ">
         <div className="relative bg-green-500 h-12 z-50">
           <Header></Header>
@@ -62,6 +82,7 @@ function App() {
           <Main></Main>
           <Aside></Aside>
         </div>
+        {switchChat && (<Chat></Chat>)}
       </div>
     </DataContext.Provider>
   );
