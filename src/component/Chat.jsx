@@ -40,7 +40,7 @@ const handleSwitchChat = ()=>{
               <p className="">{`${profileChat.first_name} ${profileChat.last_name}`}</p>
               <p className="text-xs">ใช้งานเมื่อ 3 ชม.ที่แล้ว</p>
             </div>
-            <div className="ml-1 text-pink-400 text-sm ">
+            <div className="ml-1 text-pink-500 text-sm ">
               <FontAwesomeIcon icon={faCaretDown} />
             </div>
           </div>

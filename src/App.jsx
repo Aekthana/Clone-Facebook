@@ -18,6 +18,7 @@ function App() {
   const [switchChat, setSwitchChat] = useState(false);
   const [paramChat, setParamChat] = useState(1);
   const [profileChat, setProfileChat] = useState();
+  const [post, setPost] = useState();
 
   useEffect(()=>{
 
@@ -49,11 +50,23 @@ function App() {
         console.log(error)
       }
     }
+    async function fetchPost(){
+      try{
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+        setPost(response.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
 
- 
+   
+
+    
     fetchProfile();
     fetchProfileFriend();
     fetchProfileAllFriend();
+    fetchPost()
   },[])
 
   useEffect(()=>{
@@ -72,7 +85,7 @@ function App() {
   
 
   return (
-    <DataContext.Provider value={{profile, profileFriend, allProfileFriend, setSwitchChat, setParamChat, profileChat}}>
+    <DataContext.Provider value={{profile, profileFriend, allProfileFriend, setSwitchChat, setParamChat, profileChat, post}}>
       <div className="App text-gray-900 ">
         <div className="relative bg-green-500 h-12 z-50">
           <Header></Header>
