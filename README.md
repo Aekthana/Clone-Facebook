@@ -2,6 +2,8 @@
  ### Project Clone Facebook
  Link : https://clone-facebook-topaz.vercel.app/
 
+ รองรับขนาดหน้าจอขนาดมากกว่า 1000px 
+
 ---
  เครื่องมือที่ใช้
 
@@ -12,5 +14,4 @@
 5. Axios
 6. Font Awesome
 
-รองรับขนาดหน้าจอขนาดมากกว่า 1000px 
   
